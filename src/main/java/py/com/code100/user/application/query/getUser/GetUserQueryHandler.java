@@ -1,12 +1,13 @@
-package py.com.code100.user.application.query;
+package py.com.code100.user.application.query.getUser;
 
 import an.awesome.pipelinr.Command;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 import py.com.code100.core.domain.responses.ProcessResponse;
 import py.com.code100.core.domain.responses.Response;
+import py.com.code100.user.application.query.responses.GetUserQueryResponse;
+import py.com.code100.user.application.query.responses.GetUserQueryResponseMapper;
 import py.com.code100.user.domain.repository.UserRepository;
-import py.com.code100.user.infrastructure.adapters.out.persistence.jpa.mapper.UserMapper;
 
 @Component
 public class GetUserQueryHandler implements Command.Handler<GetUserQuery, Response<GetUserQueryResponse>> {
@@ -21,13 +22,8 @@ public class GetUserQueryHandler implements Command.Handler<GetUserQuery, Respon
     public Response<GetUserQueryResponse> handle(GetUserQuery query) {
         var processResponse = new ProcessResponse<GetUserQueryResponse>();
         var entity = repository.getById(query.getId());
-        GetUserQueryResponse response = GetUserQueryResponse.builder()
-                .id(entity.getId())
-                .nombre(entity.getNombre())
-                .apellido(entity.getApellido())
-                .email(entity.getEmail())
-                .edad(entity.getEdad())
-                .build();
+
+        var response = Mappers.getMapper(GetUserQueryResponseMapper.class).toDto(entity);
         return processResponse.success(response);
     }
 }

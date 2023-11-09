@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import py.com.code100.core.annotations.WebAdapter;
-import py.com.code100.user.application.query.GetUserQuery;
+import py.com.code100.user.application.query.getUser.GetUserQuery;
 
 import java.util.UUID;
 

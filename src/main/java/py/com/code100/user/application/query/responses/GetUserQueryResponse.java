@@ -1,4 +1,4 @@
-package py.com.code100.user.application.query;
+package py.com.code100.user.application.query.responses;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,8 @@
-package py.com.code100.user.application.query;
+package py.com.code100.user.application.query.getUser;
 
 import an.awesome.pipelinr.Command;
 import py.com.code100.core.domain.responses.Response;
+import py.com.code100.user.application.query.responses.GetUserQueryResponse;
 
 import java.util.UUID;
 

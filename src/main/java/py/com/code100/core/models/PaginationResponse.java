@@ -1,35 +1,16 @@
 package py.com.code100.core.models;
 
-import org.springframework.stereotype.Component;
+import lombok.Builder;
+import lombok.Value;
 
-@Component
-public class PaginationResponse {
-    private final int page;
-    private final int pageSize;
-    private final int total;
+import java.util.List;
 
-    public PaginationResponse()
-    {
-        this.page = 0;
-        this.pageSize = 0;
-        this.total = 0;
-    }
+@Value
+@Builder(toBuilder = true)
+public class PaginationResponse<T> {
 
-    public PaginationResponse(int page, int pageSize, int total) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.total = total;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public int getTotal() {
-        return total;
-    }
+    Integer page;
+    Integer size;
+    Integer total;
+    List<T> data;
 }

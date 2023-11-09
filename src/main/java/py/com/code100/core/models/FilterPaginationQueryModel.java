@@ -1,7 +1,11 @@
 package py.com.code100.core.models;
 
 import org.springframework.stereotype.Component;
-import py.com.code100.core.specification.*;
+import py.com.code100.core.specification.Filter;
+import py.com.code100.core.specification.FilterConcat;
+import py.com.code100.core.specification.FilterOperator;
+import py.com.code100.core.specification.OrderBy;
+import py.com.code100.core.specification.OrderType;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

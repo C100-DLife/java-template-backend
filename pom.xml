@@ -6,7 +6,8 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
+		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>py.com.code100</groupId>
 	<artifactId>java-template-backend</artifactId>
@@ -76,12 +77,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
-<!--PipelinR is a lightweight command processing pipeline for your awesome Java app.-->
-		<dependency>
-			<groupId>net.sizovs</groupId>
-			<artifactId>pipelinr</artifactId>
-			<version>${net.sizovs.pipelinr.version}</version>
-		</dependency>
+		<!--PipelinR is a lightweight command processing pipeline for your awesome Java app.-->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -90,7 +86,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>app</finalName>
+		<finalName>template-code100</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -132,7 +128,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>py.com.code100.App</mainClass>
+					<mainClass>py.com.code100.AppTemplateCode100</mainClass>
 					<layout>JAR</layout>
 				</configuration>
 			</plugin>

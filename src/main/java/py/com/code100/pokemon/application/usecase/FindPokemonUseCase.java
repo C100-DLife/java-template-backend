@@ -3,10 +3,10 @@ package py.com.code100.pokemon.application.usecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import py.com.code100.core.annotations.UseCase;
-import py.com.code100.core.config.ErrorCode;
+import py.com.code100.core.config.errors.DomainException;
 import py.com.code100.pokemon.application.query.FindPokemonQuery;
 import py.com.code100.pokemon.domain.entities.Pokemon;
-import py.com.code100.pokemon.domain.exception.PokemonNotFoundException;
+import py.com.code100.pokemon.domain.exception.PokemonErrors;
 import py.com.code100.pokemon.domain.repositories.PokemonRepository;
 
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class FindPokemonUseCase implements FindPokemonQuery {
         var response = pokemonRepository.getById(id);
         if (response == null) {
             log.error("El pokemon {} no está registrado", id);
-            throw new PokemonNotFoundException(ErrorCode.POKEMON_NOT_FOUND);
+            throw new DomainException(PokemonErrors.POKEMON_100);
         }
 
         log.debug("Respuesta del servicio buscar pokemon {}: data: [{}]", id, response);

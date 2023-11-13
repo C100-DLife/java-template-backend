@@ -3,10 +3,9 @@ package py.com.code100.pokemon.application.usecase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import py.com.code100.core.annotations.UseCase;
-import py.com.code100.core.config.ErrorCode;
+import py.com.code100.core.config.errors.DomainException;
 import py.com.code100.pokemon.application.command.DeletedPokemonCommand;
-import py.com.code100.pokemon.domain.exception.PokemonDeletedException;
-import py.com.code100.pokemon.domain.exception.PokemonNotFoundException;
+import py.com.code100.pokemon.domain.exception.PokemonErrors;
 import py.com.code100.pokemon.domain.repositories.PokemonRepository;
 
 import java.util.Objects;
@@ -27,11 +26,11 @@ public class DeletedPokemonUseCase implements DeletedPokemonCommand {
         var response = pokemonRepository.getById(id);
         if (Objects.isNull(response)) {
             log.error("El pokemon {} no está registrado", id);
-            throw new PokemonNotFoundException(ErrorCode.POKEMON_NOT_FOUND);
+            throw new DomainException(PokemonErrors.POKEMON_100);
         }
         if (Objects.nonNull(response.getDeleteAt())) {
             log.error("El pokemon {} ya se encuentra eliminado", id);
-            throw new PokemonDeletedException(ErrorCode.POKEMON_DELETED);
+            throw new DomainException(PokemonErrors.POKEMON_100);
         }
 
         pokemonRepository.delete(id);

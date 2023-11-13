@@ -22,7 +22,7 @@
 MANIFEST.MF
 _site/
 activemq-data
-bin
+bin/
 build
 !/**/src/**/bin
 !/**/src/**/build
@@ -32,7 +32,7 @@ dump.rdb
 interpolated*.xml
 lib/
 manifest.yml
-out
+out/
 overridedb.*
 target
 .flattened-pom.xml

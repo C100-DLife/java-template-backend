@@ -31,7 +31,7 @@ public class DeletedPokemonUseCase implements DeletedPokemonCommand {
         }
         if (Objects.nonNull(response.getDeleteAt())) {
             log.error("El pokemon {} ya se encuentra eliminado", id);
-            throw new PokemonDeletedException(ErrorCode.POKEMON_NOT_FOUND);
+            throw new PokemonDeletedException(ErrorCode.POKEMON_DELETED);
         }
 
         pokemonRepository.delete(id);

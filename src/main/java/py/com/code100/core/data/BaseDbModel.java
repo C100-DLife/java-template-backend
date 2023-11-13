@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -18,7 +17,6 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Builder
 @SuperBuilder
 @Component
 @AllArgsConstructor

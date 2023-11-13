@@ -31,7 +31,15 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
     }
 
     protected void delete(UUID id, JpaRepository<TModel, UUID> repository) {
-        repository.deleteById(id);
+        var model = repository.findById(id);
+
+        if (model.isPresent()) {
+            model.get().setDeleteAt(new Date());
+            model.get().setUpdateAt(new Date());
+            model.get().setActive(false);
+
+            repository.save(model.get());
+        }
     }
 
     protected TEntity update(TEntity entity, JpaRepository<TModel, UUID> repository, BaseJpaMapper<TEntity, TModel> modelMapper) {
@@ -43,64 +51,71 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
 
     protected TEntity getById(UUID id, JpaRepository<TModel, UUID> repository, BaseJpaMapper<TEntity, TModel> modelMapper) {
         var model = repository.findById(id);
-        if (model.isEmpty()) {
-            return null;
-        }
+        return model.map(modelMapper::toDomainModel).orElse(null);
 
-        return modelMapper.toDomainModel(model.get());
     }
 
     protected long count(JpaRepository<TModel, UUID> repository) {
         return repository.count();
     }
 
-    protected GetEntitiesResponse<TEntity> getAll(Criteria criteria,
-                                                  JpaSpecificationExecutor<TModel> repository,
-                                                  JpaSpecificationBuilder<TModel> specificationBuilder,
-                                                  BaseJpaMapper<TEntity, TModel> modelMapper) {
+    protected GetEntitiesResponse<TEntity> getAll(
+            Criteria criteria,
+            JpaSpecificationExecutor<TModel> repository,
+            JpaSpecificationBuilder<TModel> specificationBuilder,
+            BaseJpaMapper<TEntity, TModel> modelMapper
+    ) {
 
-        return toListOrderedPagedValues(criteria, repository, specificationBuilder, modelMapper);
+        return GetEntitiesResponse.<TEntity>builder()
+                .entities(toListOrderedPagedValues(criteria, repository, specificationBuilder, modelMapper).getData())
+                .build();
     }
 
-    private GetEntitiesResponse<TEntity> toListOrderedPagedValues(Criteria criteria,
-                                                                  JpaSpecificationExecutor<TModel> repository,
-                                                                  JpaSpecificationBuilder<TModel> specificationBuilder,
-                                                                  BaseJpaMapper<TEntity, TModel> modelMapper) {
+    private PaginationResponse<TEntity> toListOrderedPagedValues(
+            Criteria criteria,
+            JpaSpecificationExecutor<TModel> repository,
+            JpaSpecificationBuilder<TModel> specificationBuilder,
+            BaseJpaMapper<TEntity, TModel> modelMapper
+    ) {
         var orders = criteria.getOrders();
         var page = criteria.getPage();
         var pageSize = criteria.getPageSize();
 
         var specification = specificationBuilder.createSpecification(criteria);
 
-        //Get the total amount of entities
+        // Get the total amount of entities
         var totalAmount = repository.count(specification);
 
-        //If there is no entities return empty list of entities.
+        // If there is no entities return empty list of entities.
         if (totalAmount == 0) {
-            return new GetEntitiesResponse<>(
-                    new ArrayList<>(),
-                    new PaginationResponse()
-            );
+            return PaginationResponse.<TEntity>builder()
+                    .total(0)
+                    .page(0)
+                    .size(0)
+                    .data(List.of())
+                    .build();
         }
 
-        //valid max page size by total amount.
+        // valid max page size by total amount.
         if (totalAmount < criteria.getPageSize()) {
             criteria.setPageSize((int) totalAmount);
         }
 
-        //Verify if page is correct. The first correct page is 0
+        // Verify if page is correct. The first correct page is 0
         if (criteria.getPage() != 0) {
             var rest = totalAmount % criteria.getPageSize() == 0 ? 0 : 1;
             var lastPage = totalAmount / criteria.getPageSize() + rest;
             if (criteria.getPage() >= lastPage) {
-                return new GetEntitiesResponse<>(
-                        new ArrayList<>(),
-                        new PaginationResponse(criteria.getPage(), criteria.getPageSize(), (int) totalAmount)
-                );
+                return PaginationResponse.<TEntity>builder()
+                        .page(criteria.getPage())
+                        .size(criteria.getPageSize())
+                        .total((int) totalAmount)
+                        .data(List.of())
+                        .build();
             }
         }
 
-        //Get entity list by criteria
+        // Get entity list by criteria
         Page<TModel> pageModelResponse;
         if (orders.isEmpty()) {
             pageModelResponse = repository.findAll(specification, PageRequest.of(page, pageSize));
@@ -123,16 +138,17 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
             } else if (!orderAscendingProperties.isEmpty()) {
                 pageModelResponse = repository.findAll(specification, PageRequest.of(page, pageSize,
                         Sort.by(Sort.Direction.ASC, String.join(",", orderAscendingProperties))));
-            }
-            else {
+            } else {
                 pageModelResponse = repository.findAll(specification, PageRequest.of(page, pageSize,
                         Sort.by(Sort.Direction.DESC, String.join(",", orderDescendingProperties))));
             }
         }
 
-        return new GetEntitiesResponse<>(
-                modelMapper.toDomainModel(pageModelResponse.toList()),
-                new PaginationResponse(criteria.getPage(), criteria.getPageSize(), (int) totalAmount)
-        );
+        return PaginationResponse.<TEntity>builder()
+                .page(criteria.getPage())
+                .size(criteria.getPageSize())
+                .total((int) totalAmount)
+                .data(modelMapper.toDomainModel(pageModelResponse.toList()))
+                .build();
     }
 }

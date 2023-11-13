@@ -1,13 +1,13 @@
 package py.com.code100.core.domain.bases;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
-@Builder
+@SuperBuilder
 public class BaseEntity {
 
     protected UUID id;

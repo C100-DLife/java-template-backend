@@ -8,5 +8,4 @@ public class AppTemplateCode100 {
 	public static void main(String[] args) {
 		SpringApplication.run(AppTemplateCode100.class, args);
 	}
-
 }

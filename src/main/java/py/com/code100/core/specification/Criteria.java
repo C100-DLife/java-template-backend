@@ -42,17 +42,16 @@ public class Criteria {
     }
 
     public Criteria(FilterPaginationQueryModel filterPaginationQueryModel) throws Exception {
-        if (filterPaginationQueryModel == null){
+        if (filterPaginationQueryModel == null) {
             this.filters = new ArrayList<>();
             this.orders = new ArrayList<>();
             this.page = 0;
             this.pageSize = Criteria.MAX_PAGE_SIZE;
-        }
-        else{
+        } else {
             this.filters = filterPaginationQueryModel.constructFilters();
             this.orders = filterPaginationQueryModel.constructOrders();
             this.page = filterPaginationQueryModel.getPage();
-            var pageSize  = filterPaginationQueryModel.getPageSize();
+            var pageSize = filterPaginationQueryModel.getPageSize();
             this.pageSize = pageSize == 0 ? Criteria.MAX_PAGE_SIZE : pageSize;
         }
     }
@@ -89,7 +88,7 @@ public class Criteria {
     }
 
     public Criteria setPageSize(int pageSize) {
-        if (pageSize > Criteria.MAX_PAGE_SIZE){
+        if (pageSize > Criteria.MAX_PAGE_SIZE) {
             pageSize = Criteria.MAX_PAGE_SIZE;
         }
         this.pageSize = pageSize;

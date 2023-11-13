@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import py.com.code100.core.annotations.WebAdapter;
 import py.com.code100.core.models.PaginationResponse;
-import py.com.code100.pokemon.infrastructure.rest.model.PokemonRequestModel;
-import py.com.code100.pokemon.infrastructure.rest.model.PokemonResponseModel;
-import py.com.code100.pokemon.infrastructure.rest.model.RestResponse;
 import py.com.code100.pokemon.application.command.CreatedPokemonCommand;
 import py.com.code100.pokemon.application.command.DeletedPokemonCommand;
-import py.com.code100.pokemon.application.query.FindPokemonQuery;
-import py.com.code100.pokemon.application.query.ListPokemonQuery;
 import py.com.code100.pokemon.application.command.UpdatedPokemonCommand;
+import py.com.code100.pokemon.application.query.FindPokemonQuery;
+import py.com.code100.pokemon.application.query.PaginatedPokemonQuery;
+import py.com.code100.pokemon.infrastructure.in.rest.model.PokemonRequestModel;
+import py.com.code100.pokemon.infrastructure.in.rest.model.PokemonResponseModel;
+import py.com.code100.pokemon.infrastructure.in.rest.model.RestResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class PokemonController {
     private static final String URL_POST_CREATED = "";
 
     // COMMANDS AND QUERYS
-    private final ListPokemonQuery pokemenQuery;
+    private final PaginatedPokemonQuery pokemenQuery;
     private final FindPokemonQuery findPokemonQuery;
     private final CreatedPokemonCommand createdPokemonCommand;
     private final UpdatedPokemonCommand updatedPokemonCommand;

@@ -5,7 +5,7 @@ import py.com.code100.pokemon.domain.entities.Pokemon;
 
 import java.util.List;
 
-public interface ListPokemonQuery {
+public interface PaginatedPokemonQuery {
 
     PaginationResponse<Pokemon> execute(List<String> filters, List<String> orders, Integer page, Integer pageSize);
 }

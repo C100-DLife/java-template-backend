@@ -1,4 +1,4 @@
-package py.com.code100.pokemon.infrastructure.rest.model;
+package py.com.code100.pokemon.infrastructure.in.rest.model;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

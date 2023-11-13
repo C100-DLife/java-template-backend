@@ -77,6 +77,12 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
+		<!-- SWAGGER -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.2</version>
+		</dependency>
 		<!--PipelinR is a lightweight command processing pipeline for your awesome Java app.-->
 		<dependency>
 			<groupId>com.google.guava</groupId>

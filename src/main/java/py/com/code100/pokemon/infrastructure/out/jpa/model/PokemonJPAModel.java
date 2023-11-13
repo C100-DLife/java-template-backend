@@ -20,9 +20,9 @@ public class PokemonJPAModel extends BaseDbModel {
 
     @Basic(optional = false)
     @Column(name = "nombre", length = 200, unique = true, nullable = false)
-    private String name;
+    private String nombre;
 
     @Basic(optional = false)
     @Column(name = "descripcion", length = 500, unique = true, nullable = false)
-    private String decription;
+    private String descripcion;
 }

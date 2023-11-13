@@ -1,7 +1,7 @@
 package py.com.code100.pokemon.infrastructure.out.jpa.repositories;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import py.com.code100.core.domain.bases.BaseRepositoryImpl;
 import py.com.code100.core.models.GetEntitiesResponse;
 import py.com.code100.core.specification.Criteria;
@@ -13,9 +13,10 @@ import py.com.code100.pokemon.infrastructure.out.jpa.model.PokemonJPAModel;
 
 import java.util.UUID;
 
-@Repository
+
 @AllArgsConstructor
-public class PokemonJPARepositoryImpl extends BaseRepositoryImpl<Pokemon, PokemonJPAModel> implements PokemonRepository {
+@Component
+public class PokemonRepositoryImpl extends BaseRepositoryImpl<Pokemon, PokemonJPAModel> implements PokemonRepository {
 
     private final PokemonJPARepository jpaRepository;
     private final PokemonMapper mapper;

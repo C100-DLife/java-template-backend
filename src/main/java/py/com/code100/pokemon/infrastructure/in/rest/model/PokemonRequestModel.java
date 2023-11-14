@@ -1,24 +1,25 @@
 package py.com.code100.pokemon.infrastructure.in.rest.model;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 import py.com.code100.pokemon.domain.entities.Pokemon;
 
-@Value
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PokemonRequestModel {
 
     @NotBlank
-    String name;
+    String nombre;
 
     @NotBlank
-    String description;
+    String descripcion;
 
     public Pokemon toDomain() {
         return Pokemon.builder()
-                .name(this.name)
-                .description(this.description)
+                .nombre(this.nombre)
+                .descripcion(this.descripcion)
                 .build();
     }
 }

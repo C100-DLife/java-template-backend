@@ -58,14 +58,14 @@ public abstract class BaseDbModel {
      * The timestamp representing the creation date and time of the entity.
      */
     @CreationTimestamp
-    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
+    @Column(name = "created_at", nullable = false)
     protected Date createAt;
 
     /**
      * The timestamp representing the last update date and time of the entity.
      */
     @UpdateTimestamp
-    @Column(name = "updated_at", insertable = false)
+    @Column(name = "updated_at", nullable  = false)
     protected Date updateAt;
 
     /**

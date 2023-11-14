@@ -2,7 +2,6 @@ package py.com.code100.pokemon.infrastructure.in.rest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class PokemonController {
     private final DeletedPokemonCommand deletedPokemonCommand;
 
 
-    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
     public RestResponse<PaginationResponse<PokemonResponseModel>> list(
             @RequestParam(value = "filters", required = false) List<String> filters,
             @RequestParam(value = "orders", required = false) List<String> orders,
@@ -45,7 +44,7 @@ public class PokemonController {
 
         return RestResponse.<PaginationResponse<PokemonResponseModel>>builder()
                 .status(HttpStatus.OK.value())
-                .data(PaginationResponse.<PokemonResponseModel>builder()
+                .result(PaginationResponse.<PokemonResponseModel>builder()
                         .page(response.getPage())
                         .size(response.getSize())
                         .total(response.getTotal())
@@ -54,32 +53,32 @@ public class PokemonController {
                 .build();
     }
 
-    @GetMapping(value = "/{id}",produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
     public RestResponse<PokemonResponseModel> getById(@PathVariable("id") String id) {
         var response = findPokemonQuery.execute(UUID.fromString(id));
 
         return RestResponse.<PokemonResponseModel>builder()
                 .status(HttpStatus.OK.value())
-                .data(PokemonResponseModel.of(response))
+                .result(PokemonResponseModel.of(response))
                 .build();
     }
 
-    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE },
-            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public void created(@Valid @RequestBody PokemonRequestModel request) {
         createdPokemonCommand.execute(request.toDomain());
     }
 
-    @PutMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE },
-            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE})
     public RestResponse<PokemonResponseModel> updated(@PathVariable("id") String id,
-            @Valid @RequestBody PokemonRequestModel request) {
+                                                      @Valid @RequestBody PokemonRequestModel request) {
         var response = updatedPokemonCommand.execute(UUID.fromString(id), request.toDomain());
 
         return RestResponse.<PokemonResponseModel>builder()
                 .status(HttpStatus.OK.value())
-                .data(PokemonResponseModel.of(response))
+                .result(PokemonResponseModel.of(response))
                 .build();
     }
 

@@ -9,5 +9,5 @@ import lombok.Value;
 @AllArgsConstructor
 public class RestResponse<T> {
     Integer status;
-    T data;
+    T result;
 }

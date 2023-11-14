@@ -10,18 +10,18 @@ import py.com.code100.pokemon.domain.entities.Pokemon;
 @Builder
 public class PokemonResponseModel {
 
-    @JsonProperty("name")
+    @JsonProperty("nombre")
     @NotBlank(message = "Nombre es requerido")
-    String name;
+    String nombre;
 
-    @JsonProperty("description")
+    @JsonProperty("descripcion")
     @NotBlank(message = "Nombre es requerido")
-    String description;
+    String descripcion;
 
     public static PokemonResponseModel of(Pokemon domain) {
         return PokemonResponseModel.builder()
-                .name(domain.getName())
-                .description(domain.getDescription())
+                .nombre(domain.getNombre())
+                .descripcion(domain.getDescripcion())
                 .build();
     }
 }

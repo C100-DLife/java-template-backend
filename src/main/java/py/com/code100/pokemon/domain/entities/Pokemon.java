@@ -8,6 +8,6 @@ import py.com.code100.core.domain.bases.BaseEntity;
 @SuperBuilder
 public class Pokemon extends BaseEntity {
 
-    String name;
-    String description;
+    String nombre;
+    String descripcion;
 }

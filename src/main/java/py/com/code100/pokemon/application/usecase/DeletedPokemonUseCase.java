@@ -20,20 +20,21 @@ public class DeletedPokemonUseCase implements DeletedPokemonCommand {
 
     @Override
     public void execute(UUID id) {
-        log.info("Ejecutando servicio de eliminación de pokemon: {}", id);
-
-        log.info("Obteniendo la información pokemon: {}", id);
-        var response = pokemonRepository.getById(id);
-        if (Objects.isNull(response)) {
-            log.error("El pokemon {} no está registrado", id);
-            throw new DomainException(PokemonErrors.POKEMON_100);
-        }
-        if (Objects.nonNull(response.getDeleteAt())) {
-            log.error("El pokemon {} ya se encuentra eliminado", id);
-            throw new DomainException(PokemonErrors.POKEMON_100);
-        }
-
-        pokemonRepository.delete(id);
-        log.info("Pokemon eliminado correctamente: {}", id);
+        throw new DomainException(PokemonErrors.POKEMON_100);
+//        log.info("Ejecutando servicio de eliminación de pokemon: {}", id);
+//
+//        log.info("Obteniendo la información pokemon: {}", id);
+//        var response = pokemonRepository.getById(id);
+//        if (Objects.isNull(response)) {
+//            log.error("El pokemon {} no está registrado", id);
+//            throw new DomainException(PokemonErrors.POKEMON_100);
+//        }
+//        if (Objects.nonNull(response.getDeleteAt())) {
+//            log.error("El pokemon {} ya se encuentra eliminado", id);
+//            throw new DomainException(PokemonErrors.POKEMON_100);
+//        }
+//
+//        pokemonRepository.delete(id);
+//        log.info("Pokemon eliminado correctamente: {}", id);
     }
 }

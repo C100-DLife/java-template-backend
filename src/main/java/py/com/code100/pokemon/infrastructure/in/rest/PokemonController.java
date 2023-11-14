@@ -4,15 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import py.com.code100.core.annotations.WebAdapter;
 import py.com.code100.core.models.PaginationResponse;
 import py.com.code100.pokemon.application.command.CreatedPokemonCommand;
@@ -34,12 +27,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/pokemon")
 public class PokemonController {
 
-    // URLS
-    private static final String URL_GET_ALL = "";
-    private static final String URL_ID = "{id}";
-    private static final String URL_POST_CREATED = "";
-
-    // COMMANDS AND QUERYS
     private final PaginatedPokemonQuery pokemenQuery;
     private final FindPokemonQuery findPokemonQuery;
     private final CreatedPokemonCommand createdPokemonCommand;
@@ -47,7 +34,7 @@ public class PokemonController {
     private final DeletedPokemonCommand deletedPokemonCommand;
 
 
-    @GetMapping(URL_GET_ALL)
+    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
     public RestResponse<PaginationResponse<PokemonResponseModel>> list(
             @RequestParam(value = "filters", required = false) List<String> filters,
             @RequestParam(value = "orders", required = false) List<String> orders,
@@ -67,10 +54,8 @@ public class PokemonController {
                 .build();
     }
 
-    @GetMapping(URL_ID)
-    public RestResponse<PokemonResponseModel> getId(
-            @Param("id") String id
-    ) {
+    @GetMapping(value = "/{id}",produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    public RestResponse<PokemonResponseModel> getById(@PathVariable("id") String id) {
         var response = findPokemonQuery.execute(UUID.fromString(id));
 
         return RestResponse.<PokemonResponseModel>builder()
@@ -79,17 +64,17 @@ public class PokemonController {
                 .build();
     }
 
-    @PostMapping(URL_POST_CREATED)
+    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE },
+            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     public void created(@Valid @RequestBody PokemonRequestModel request) {
         createdPokemonCommand.execute(request.toDomain());
     }
 
-    @PutMapping(URL_ID)
-    public RestResponse<PokemonResponseModel> updated(
-            @Param("id") String id,
-            @Valid @RequestBody PokemonRequestModel request
-    ) {
+    @PutMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE },
+            consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    public RestResponse<PokemonResponseModel> updated(@PathVariable("id") String id,
+            @Valid @RequestBody PokemonRequestModel request) {
         var response = updatedPokemonCommand.execute(UUID.fromString(id), request.toDomain());
 
         return RestResponse.<PokemonResponseModel>builder()
@@ -98,9 +83,9 @@ public class PokemonController {
                 .build();
     }
 
-    @DeleteMapping(URL_ID)
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleted(@Param("id") String id) {
+    public void deleted(@PathVariable("id") String id) {
         deletedPokemonCommand.execute(UUID.fromString(id));
     }
 }

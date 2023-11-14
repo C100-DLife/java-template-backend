@@ -19,9 +19,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An abstract base repository implementation providing common CRUD operations for entities.
+ *
+ * <p>This class includes methods for adding, deleting, updating, retrieving, counting, and fetching entities based on criteria.</p>
+ *
+ * @param <TEntity> The type of the entity extending {@link BaseEntity}.
+ * @param <TModel> The type of the JPA entity extending {@link BaseDbModel}.
+ */
 @Component
 public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel extends BaseDbModel> {
 
+    /**
+     * Adds a new entity to the repository.
+     *
+     * @param entity The entity to be added.
+     * @param repository The JPA repository for the entity.
+     * @param modelMapper The mapper for converting between domain and JPA entities.
+     * @return The added entity.
+     */
     protected TEntity add(TEntity entity, JpaRepository<TModel, UUID> repository, BaseJpaMapper<TEntity, TModel> modelMapper) {
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
@@ -30,6 +46,12 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
         return modelMapper.toDomainModel(newModel);
     }
 
+    /**
+     * Deletes an entity from the repository based on its unique identifier.
+     *
+     * @param id The unique identifier of the entity to be deleted.
+     * @param repository The JPA repository for the entity.
+     */
     protected void delete(UUID id, JpaRepository<TModel, UUID> repository) {
         var model = repository.findById(id);
 
@@ -42,6 +64,14 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
         }
     }
 
+    /**
+     * Updates an existing entity in the repository.
+     *
+     * @param entity The entity to be updated.
+     * @param repository The JPA repository for the entity.
+     * @param modelMapper The mapper for converting between domain and JPA entities.
+     * @return The updated entity.
+     */
     protected TEntity update(TEntity entity, JpaRepository<TModel, UUID> repository, BaseJpaMapper<TEntity, TModel> modelMapper) {
         entity.setUpdateAt(new Date());
         var model = modelMapper.toJpaModel(entity);
@@ -49,16 +79,38 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
         return modelMapper.toDomainModel(newModel);
     }
 
+    /**
+     * Retrieves an entity from the repository based on its unique identifier.
+     *
+     * @param id The unique identifier of the entity to be retrieved.
+     * @param repository The JPA repository for the entity.
+     * @param modelMapper The mapper for converting between domain and JPA entities.
+     * @return The retrieved entity, or {@code null} if not found.
+     */
     protected TEntity getById(UUID id, JpaRepository<TModel, UUID> repository, BaseJpaMapper<TEntity, TModel> modelMapper) {
         var model = repository.findById(id);
         return model.map(modelMapper::toDomainModel).orElse(null);
 
     }
 
+    /**
+     * Counts the total number of entities in the repository.
+     *
+     * @param repository The JPA repository for the entity.
+     * @return The total number of entities.
+     */
     protected long count(JpaRepository<TModel, UUID> repository) {
         return repository.count();
     }
-
+    /**
+     * Retrieves all entities from the repository based on specified criteria.
+     *
+     * @param criteria The criteria to filter entities.
+     * @param repository The JPA specification executor for the entity.
+     * @param specificationBuilder The builder for creating JPA specifications.
+     * @param modelMapper The mapper for converting between domain and JPA entities.
+     * @return A response containing a list of entities that match the criteria.
+     */
     protected GetEntitiesResponse<TEntity> getAll(
             Criteria criteria,
             JpaSpecificationExecutor<TModel> repository,
@@ -71,6 +123,15 @@ public abstract class BaseRepositoryImpl<TEntity extends BaseEntity, TModel exte
                 .build();
     }
 
+    /**
+     * Converts a JPA specification executor and criteria into a paginated list of ordered entities.
+     *
+     * @param criteria The criteria to filter entities.
+     * @param repository The JPA specification executor for the entity.
+     * @param specificationBuilder The builder for creating JPA specifications.
+     * @param modelMapper The mapper for converting between domain and JPA entities.
+     * @return A paginated response containing a list of entities that match the criteria.
+     */
     private PaginationResponse<TEntity> toListOrderedPagedValues(
             Criteria criteria,
             JpaSpecificationExecutor<TModel> repository,

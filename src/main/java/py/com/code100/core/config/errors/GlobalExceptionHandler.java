@@ -23,8 +23,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @param e The {@link EntityNotFoundException} to handle.
      * @return A standardized {@link ProblemDetail} for the entity not found scenario.
      */
-    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntityNotFoundException.class)
     ProblemDetail handleEntityNotFoundException(EntityNotFoundException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         problemDetail.setTitle("Entity not found");

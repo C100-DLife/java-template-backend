@@ -15,13 +15,13 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
-                        name = "Alejandro Lafourcade",
-                        email = "alafourcadev@gmail.com",
-                        url = "https://alafourcadev.com/"
+                        name = "Code100 Template",
+                        email = "develop@code100.com.py",
+                        url = "https://code100.com.py"
                 ),
                 description = "OpenApi documentation for Pokemon API",
-                title = "OpenApi specification - Alejandro Lafourcade",
-                version = "1.0",
+                title = "OpenApi specification - Code100 Template",
+                version = "1.0.0",
                 license = @License(
                         name = "Licence name",
                         url = "https://some-url.com"

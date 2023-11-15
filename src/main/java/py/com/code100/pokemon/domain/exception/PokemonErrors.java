@@ -7,7 +7,6 @@ public enum PokemonErrors implements ErrorCode {
     POKEMON_100("POKEMON_100", "Los pokemones con 1 año no pueden tirar poderes");
 
 
-
     private final String code;
     private final String message;
 

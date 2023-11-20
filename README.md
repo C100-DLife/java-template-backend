@@ -1,2 +1,2 @@
 # java-template-backend
-Template para los proyectos Java con Spring Boot de Code 100.
+Template para los proyectos Java con Spring Boot utlizando de Code 100.

@@ -33,5 +33,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
+
+    @ExceptionHandler(Throwable.class)
+    protected ProblemDetail handleThrowable(Throwable e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        problemDetail.setTitle("Internal Server Error");
+        problemDetail.setType(URI.create("https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"));
+        problemDetail.setProperty("errorCategory", ErrorType.GENERIC);
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
 }
 
